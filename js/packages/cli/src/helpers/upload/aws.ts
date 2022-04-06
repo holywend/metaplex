@@ -40,21 +40,23 @@ export async function awsUpload(
   manifestBuffer: Buffer,
 ) {
   const REGION = 'us-east-1'; // TODO: Parameterize this.
-  const s3Client = new S3Client({ region: REGION });
+  // const s3Client = new S3Client({ region: REGION });
 
   async function uploadMedia(media) {
-    const mediaPath = `assets/${basename(media)}`;
-    log.debug('media:', media);
-    log.debug('mediaPath:', mediaPath);
-    const mediaFileStream = createReadStream(media);
-    const mediaUrl = await uploadFile(
-      s3Client,
-      awsS3Bucket,
-      mediaPath,
-      getType(media),
-      mediaFileStream,
-    );
-    return mediaUrl;
+    console.log('uploading media:', media);
+    return media;
+    // const mediaPath = `assets/${basename(media)}`;
+    // log.debug('media:', media);
+    // log.debug('mediaPath:', mediaPath);
+    // const mediaFileStream = createReadStream(media);
+    // const mediaUrl = await uploadFile(
+    //   s3Client,
+    //   awsS3Bucket,
+    //   mediaPath,
+    //   getType(media),
+    //   mediaFileStream,
+    // );
+    // return mediaUrl;
   }
 
   // Copied from ipfsUpload
@@ -76,13 +78,17 @@ export async function awsUpload(
 
   const extensionRegex = new RegExp(`${path.extname(image)}$`);
   const metadataFilename = image.replace(extensionRegex, '.json');
-  const metadataUrl = await uploadFile(
-    s3Client,
-    awsS3Bucket,
-    metadataFilename,
-    'application/json',
-    updatedManifestBuffer,
-  );
+  const metadataUrl = metadataFilename;
+  // const metadataUrl = await uploadFile(
+  //   s3Client,
+  //   awsS3Bucket,
+  //   metadataFilename,
+  //   'application/json',
+  //   updatedManifestBuffer,
+  // );
+
+  console.log('metadataUrl:', metadataUrl);
+  console.log('imageUrl:', imageUrl);
 
   return [metadataUrl, imageUrl, animationUrl];
 }

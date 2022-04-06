@@ -333,7 +333,7 @@ export async function uploadV2({
               case StorageType.Aws:
                 [link, imageLink, animationLink] = await awsUpload(
                   awsS3Bucket,
-                  image,
+                  manifest.image, // this new changes
                   animation,
                   manifestBuffer,
                 );
